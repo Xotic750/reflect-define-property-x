@@ -42,11 +42,13 @@
   'use strict';
 
   var hasReflect = require('has-reflect-support-x');
-  var assertIsObject = require('assert-is-object-x');
-  var $defineProperty = require('object-define-property-x');
   var reflectDefineProperty = hasReflect && Reflect.defineProperty;
+  var assertIsObject;
+  var $defineProperty;
 
   if (!reflectDefineProperty) {
+    assertIsObject = require('assert-is-object-x');
+    $defineProperty = require('object-define-property-x');
     reflectDefineProperty = function defineProperty(target, propertyKey, attributes) {
       assertIsObject(target);
       try {
