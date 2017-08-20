@@ -1,6 +1,6 @@
 /**
  * @file Sham for Reflect.defineProperty
- * @version 1.1.0
+ * @version 1.2.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -11,12 +11,20 @@
 
 var hasReflect = require('has-reflect-support-x');
 var reflectDefineProperty = hasReflect && Reflect.defineProperty;
-var assertIsObject;
-var $defineProperty;
+if (reflectDefineProperty) {
+  try {
+    var obj = {};
+    if (reflectDefineProperty(obj, 'x', { value: 7 }) !== true || obj.x !== 7) {
+      throw new Error('Inavlid result');
+    }
+  } catch (ignore) {
+    reflectDefineProperty = null;
+  }
+}
 
 if (Boolean(reflectDefineProperty) === false) {
-  assertIsObject = require('assert-is-object-x');
-  $defineProperty = require('object-define-property-x');
+  var assertIsObject = require('assert-is-object-x');
+  var $defineProperty = require('object-define-property-x');
   reflectDefineProperty = function defineProperty(target, propertyKey, attributes) {
     assertIsObject(target);
     try {
