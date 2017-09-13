@@ -1,6 +1,6 @@
 /**
  * @file Sham for Reflect.defineProperty
- * @version 1.2.0
+ * @version 2.0.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,32 +9,92 @@
 
 'use strict';
 
-var hasReflect = require('has-reflect-support-x');
-var reflectDefineProperty = hasReflect && Reflect.defineProperty;
-if (reflectDefineProperty) {
-  try {
-    var obj = {};
-    if (reflectDefineProperty(obj, 'x', { value: 7 }) !== true || obj.x !== 7) {
-      throw new Error('Inavlid result');
-    }
-  } catch (ignore) {
-    reflectDefineProperty = null;
-  }
-}
+var attempt = require('attempt-x');
+var assertIsObject = require('assert-is-object-x');
+var $defineProperty = require('object-define-property-x');
+var objectKeys = require('attempt-x');
+var arrayIncludes = require('array-includes-x');
+var has = require('has-own-property-x');
+var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
+var some = require('array-some-x');
 
-if (Boolean(reflectDefineProperty) === false) {
-  var assertIsObject = require('assert-is-object-x');
-  var $defineProperty = require('object-define-property-x');
-  reflectDefineProperty = function defineProperty(target, propertyKey, attributes) {
-    assertIsObject(target);
-    try {
-      $defineProperty(target, propertyKey, attributes);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-}
+var testObj = $defineProperty({}, 'test', {
+  configurable: true,
+  enumerable: true,
+  value: 'Testing',
+  writable: false
+});
+
+var res = attempt(function () {
+  testObj.test = true;
+});
+
+var supportsWritable = res.threw || testObj.test === 'Testing';
+
+testObj = $defineProperty({}, 'test', {
+  configurable: true,
+  enumerable: false,
+  value: 'Testing',
+  writable: true
+});
+
+var supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
+
+testObj = $defineProperty({}, 'test', {
+  configurable: false,
+  enumerable: true,
+  value: 'Testing',
+  writable: true
+});
+
+res = attempt(function () {
+  delete testObj.test;
+});
+
+var supportsConfigurable = res.threw || testObj.test === 'Testing';
+
+var toComparableDescriptor = function _toComparableDescriptor(desc) {
+  var descriptor = {};
+  if (supportsEnumerable) {
+    descriptor.enumerable = Boolean(desc.enumerable);
+  }
+
+  if (supportsConfigurable) {
+    descriptor.configurable = Boolean(desc.configurable);
+  }
+
+  if (has(desc, 'value')) {
+    descriptor.value = desc.value;
+  }
+
+  if (supportsWritable) {
+    descriptor.writable = Boolean(desc.writable);
+  }
+
+  if (has(desc, 'get')) {
+    descriptor.get = desc.get;
+  }
+
+  if (has(desc, 'set')) {
+    descriptor.set = desc.set;
+  }
+
+  return descriptor;
+};
+
+var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+  var actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
+  var requested = toComparableDescriptor(atributesObj);
+  var actualKeys = objectKeys(actual);
+
+  if (actualKeys.length !== objectKeys(requested).length) {
+    return false;
+  }
+
+  return some(actualKeys, function (key) {
+    return actual[key] !== requested[key];
+  }) === false;
+};
 
 /**
  * This method allows precise addition to or modification of a property on an object.
@@ -49,9 +109,17 @@ if (Boolean(reflectDefineProperty) === false) {
  * @throws {TypeError} If target is not an Object.
  * @returns {Object} A Boolean indicating whether or not the property was successfully defined.
  * @example
- * var reflectDefineProperty = require('reflect-define-property-x');
+ * var nativeDP = require('reflect-define-property-x');
  * var obj = {};
- * reflectDefineProperty(obj, 'x', {value: 7}); // true
+ * nativeDP(obj, 'x', {value: 7}); // true
  * obj.x; // 7
  */
-module.exports = reflectDefineProperty;
+module.exports = function defineProperty(target, propertyKey, attributes) {
+  assertIsObject(target);
+  var result = attempt($defineProperty, target, propertyKey, attributes);
+  if (result.threw) {
+    return false;
+  }
+
+  return areDescriptorsEqual(result.value, attributes, propertyKey);
+};

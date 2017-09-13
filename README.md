@@ -23,20 +23,20 @@
 ## reflect-define-property-x
 Sham for Reflect.defineProperty
 
-**Version**: 1.2.0  
+**Version**: 2.0.0  
 **Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
 <a name="exp_module_reflect-define-property-x--module.exports"></a>
 
-### `module.exports` ⇒ <code>Object</code> ⏏
+### `module.exports(target, propertyKey, attributes)` ⇒ <code>Object</code> ⏏
 This method allows precise addition to or modification of a property on an object.
 For more details see the Object.defineProperty which is similar.
 Object.defineProperty returns the object or throws a TypeError if the property
 has not been successfully defined. Reflect.defineProperty, however, simply returns
 a Boolean indicating whether or not the property was successfully defined.
 
-**Kind**: Exported member  
+**Kind**: Exported function  
 **Returns**: <code>Object</code> - A Boolean indicating whether or not the property was successfully defined.  
 **Throws**:
 
@@ -51,8 +51,8 @@ a Boolean indicating whether or not the property was successfully defined.
 
 **Example**  
 ```js
-var reflectDefineProperty = require('reflect-define-property-x');
+var nativeDP = require('reflect-define-property-x');
 var obj = {};
-reflectDefineProperty(obj, 'x', {value: 7}); // true
+nativeDP(obj, 'x', {value: 7}); // true
 obj.x; // 7
 ```

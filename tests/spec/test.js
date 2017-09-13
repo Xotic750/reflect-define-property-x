@@ -21,7 +21,60 @@ if (typeof module === 'object' && module.exports) {
   reflectDefineProperty = returnExports;
 }
 
-var ifExtensionsPreventibleIt = Object.preventExtensions ? it : xit;
+var supportsGetSet;
+try {
+  Object.defineProperty({}, 'test', {
+    get: function () { return void 0; },
+    set: function () {}
+  });
+
+  supportsGetSet = true;
+} catch (ignore) {}
+
+var itSupportsGetSet = supportsGetSet ? it : xit;
+
+var testObj = Object.defineProperty({}, 'test', {
+  configurable: false,
+  enumerable: true,
+  value: 'Testing',
+  writable: true
+});
+
+var supportsConfigurable;
+try {
+  delete testObj.test;
+  supportsConfigurable = testObj.test === 'Testing';
+} catch (ignore) {
+  supportsConfigurable = true;
+}
+
+var itSupportsConfigurable = supportsConfigurable ? it : xit;
+
+testObj = Object.defineProperty({}, 'test', {
+  configurable: true,
+  enumerable: true,
+  value: 'Testing',
+  writable: false
+});
+
+var supportsWritable;
+try {
+  testObj.test = true;
+  supportsWritable = testObj.test === 'Testing';
+} catch (ignore) {
+  supportsWritable = true;
+}
+
+var itSupportsConWri = supportsConfigurable && supportsWritable ? it : xit;
+
+var supportsPreventExtensions;
+var tObj = Object.preventExtensions({});
+try {
+  tObj.a = true;
+} catch (ignore) {
+  supportsPreventExtensions = true;
+}
+var ifExtensionsPreventibleIt = supportsPreventExtensions ? it : xit;
 
 describe('reflectDefineProperty', function () {
   it('is a function', function () {
@@ -56,26 +109,53 @@ describe('reflectDefineProperty', function () {
     expect(reflectDefineProperty(o, 'prop', {})).toBe(false);
   });
 
-  it('can return true, even for non-configurable, non-writable properties', function () {
+  itSupportsConWri('can return true, even for non-writable, non-configurable properties', function () {
     var o = {};
     var desc = {
       configurable: false,
-      enumerable: false,
+      enumerable: true,
       value: 13,
       writable: false
     };
 
-    expect(reflectDefineProperty(o, 'prop', desc)).toBe(true);
+    expect(reflectDefineProperty(o, 'prop', desc)).toBe(true, 'Initial');
 
     // Defined as non-configurable, but descriptor is identical.
-    expect(reflectDefineProperty(o, 'prop', desc)).toBe(true);
+    expect(reflectDefineProperty(o, 'prop', desc)).toBe(true, 'Define same descriptor');
 
     desc.value = 37; // Change
 
-    expect(reflectDefineProperty(o, 'prop', desc)).toBe(false);
+    expect(reflectDefineProperty(o, 'prop', desc)).toBe(false, 'Define different descriptor');
   });
 
-  it('can change from one property type to another, if configurable', function () {
+  itSupportsGetSet('can change from one property type to another, if supports get/set', function () {
+    var o = {};
+
+    var desc1 = {
+      configurable: true,
+      set: function () {}
+    };
+
+    var desc2 = {
+      configurable: true,
+      value: 13
+    };
+
+    var desc3 = {
+      configurable: true,
+      get: function () {
+        return void 0;
+      }
+    };
+
+    expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
+
+    expect(reflectDefineProperty(o, 'prop', desc2)).toBe(true, 'desc2');
+
+    expect(reflectDefineProperty(o, 'prop', desc3)).toBe(true, 'desc3');
+  });
+
+  itSupportsConfigurable('can change from one property type to another, if configurable', function () {
     var o = {};
 
     var desc1 = {
@@ -94,10 +174,10 @@ describe('reflectDefineProperty', function () {
       }
     };
 
-    expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true);
+    expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
 
-    expect(reflectDefineProperty(o, 'prop', desc2)).toBe(true);
+    expect(reflectDefineProperty(o, 'prop', desc2)).toBe(true, 'desc2');
 
-    expect(reflectDefineProperty(o, 'prop', desc3)).toBe(false);
+    expect(reflectDefineProperty(o, 'prop', desc3)).toBe(false, 'desc3');
   });
 });
