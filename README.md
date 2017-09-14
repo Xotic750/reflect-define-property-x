@@ -23,7 +23,7 @@
 ## reflect-define-property-x
 Sham for Reflect.defineProperty
 
-**Version**: 2.0.0  
+**Version**: 2.1.0  
 **Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
