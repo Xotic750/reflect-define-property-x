@@ -1,5 +1,5 @@
 /**
- * @file Sham for Reflect.defineProperty
+ * @file Sham for Reflect.defineProperty.
  * @version 2.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
@@ -7,54 +7,53 @@
  * @module reflect-define-property-x
  */
 
-'use strict';
+const attempt = require('attempt-x');
+const assertIsObject = require('assert-is-object-x');
+const $defineProperty = require('object-define-property-x');
+const objectKeys = require('attempt-x');
+const arrayIncludes = require('array-includes-x');
+const has = require('has-own-property-x');
+const getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
+const some = require('array-some-x');
 
-var attempt = require('attempt-x');
-var assertIsObject = require('assert-is-object-x');
-var $defineProperty = require('object-define-property-x');
-var objectKeys = require('attempt-x');
-var arrayIncludes = require('array-includes-x');
-var has = require('has-own-property-x');
-var getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
-var some = require('array-some-x');
-
-var testObj = $defineProperty({}, 'test', {
+let testObj = $defineProperty({}, 'test', {
   configurable: true,
   enumerable: true,
   value: 'Testing',
-  writable: false
+  writable: false,
 });
 
-var res = attempt(function () {
+let res = attempt(function() {
   testObj.test = true;
 });
 
-var supportsWritable = res.threw || testObj.test === 'Testing';
+const supportsWritable = res.threw || testObj.test === 'Testing';
 
 testObj = $defineProperty({}, 'test', {
   configurable: true,
   enumerable: false,
   value: 'Testing',
-  writable: true
+  writable: true,
 });
 
-var supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
+const supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
 
 testObj = $defineProperty({}, 'test', {
   configurable: false,
   enumerable: true,
   value: 'Testing',
-  writable: true
+  writable: true,
 });
 
-res = attempt(function () {
+res = attempt(function() {
   delete testObj.test;
 });
 
-var supportsConfigurable = res.threw || testObj.test === 'Testing';
+const supportsConfigurable = res.threw || testObj.test === 'Testing';
 
-var toComparableDescriptor = function _toComparableDescriptor(desc) {
-  var descriptor = {};
+const toComparableDescriptor = function _toComparableDescriptor(desc) {
+  const descriptor = {};
+
   if (supportsEnumerable) {
     descriptor.enumerable = Boolean(desc.enumerable);
   }
@@ -82,18 +81,20 @@ var toComparableDescriptor = function _toComparableDescriptor(desc) {
   return descriptor;
 };
 
-var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
-  var actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
-  var requested = toComparableDescriptor(atributesObj);
-  var actualKeys = objectKeys(actual);
+const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+  const actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
+  const requested = toComparableDescriptor(atributesObj);
+  const actualKeys = objectKeys(actual);
 
   if (actualKeys.length !== objectKeys(requested).length) {
     return false;
   }
 
-  return some(actualKeys, function (key) {
-    return actual[key] !== requested[key];
-  }) === false;
+  return (
+    some(actualKeys, function(key) {
+      return actual[key] !== requested[key];
+    }) === false
+  );
 };
 
 /**
@@ -107,7 +108,7 @@ var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj,
  * @param {*} propertyKey - The name of the property to be defined or modified.
  * @param {*} attributes - The attributes for the property being defined or modified.
  * @throws {TypeError} If target is not an Object.
- * @returns {Object} A Boolean indicating whether or not the property was successfully defined.
+ * @returns {object} A Boolean indicating whether or not the property was successfully defined.
  * @example
  * var nativeDP = require('reflect-define-property-x');
  * var obj = {};
@@ -116,7 +117,8 @@ var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj,
  */
 module.exports = function defineProperty(target, propertyKey, attributes) {
   assertIsObject(target);
-  var result = attempt($defineProperty, target, propertyKey, attributes);
+  const result = attempt($defineProperty, target, propertyKey, attributes);
+
   if (result.threw) {
     return false;
   }

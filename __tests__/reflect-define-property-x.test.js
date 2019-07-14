@@ -1,17 +1,19 @@
-'use strict';
+let reflectDefineProperty;
 
-var reflectDefineProperty;
 if (typeof module === 'object' && module.exports) {
   require('es5-shim');
   require('es5-shim/es5-sham');
+
   if (typeof JSON === 'undefined') {
     JSON = {};
   }
+
   require('json3').runInContext(null, JSON);
   require('es6-shim');
-  var es7 = require('es7-shim');
-  Object.keys(es7).forEach(function (key) {
-    var obj = es7[key];
+  const es7 = require('es7-shim');
+  Object.keys(es7).forEach(function(key) {
+    const obj = es7[key];
+
     if (typeof obj.shim === 'function') {
       obj.shim();
     }
@@ -21,26 +23,28 @@ if (typeof module === 'object' && module.exports) {
   reflectDefineProperty = returnExports;
 }
 
-var supportsGetSet;
+let supportsGetSet;
 try {
   Object.defineProperty({}, 'test', {
-    get: function () { return void 0; },
-    set: function () {}
+    get() {
+      return void 0;
+    },
+    set() {},
   });
 
   supportsGetSet = true;
 } catch (ignore) {}
 
-var itSupportsGetSet = supportsGetSet ? it : xit;
+const itSupportsGetSet = supportsGetSet ? it : xit;
 
-var testObj = Object.defineProperty({}, 'test', {
+let testObj = Object.defineProperty({}, 'test', {
   configurable: false,
   enumerable: true,
   value: 'Testing',
-  writable: true
+  writable: true,
 });
 
-var supportsConfigurable;
+let supportsConfigurable;
 try {
   delete testObj.test;
   supportsConfigurable = testObj.test === 'Testing';
@@ -48,16 +52,16 @@ try {
   supportsConfigurable = true;
 }
 
-var itSupportsConfigurable = supportsConfigurable ? it : xit;
+const itSupportsConfigurable = supportsConfigurable ? it : xit;
 
 testObj = Object.defineProperty({}, 'test', {
   configurable: true,
   enumerable: true,
   value: 'Testing',
-  writable: false
+  writable: false,
 });
 
-var supportsWritable;
+let supportsWritable;
 try {
   testObj.test = true;
   supportsWritable = testObj.test === 'Testing';
@@ -65,57 +69,58 @@ try {
   supportsWritable = true;
 }
 
-var itSupportsConWri = supportsConfigurable && supportsWritable ? it : xit;
+const itSupportsConWri = supportsConfigurable && supportsWritable ? it : xit;
 
-var supportsPreventExtensions;
-var tObj = Object.preventExtensions({});
+let supportsPreventExtensions;
+const tObj = Object.preventExtensions({});
 try {
   tObj.a = true;
 } catch (ignore) {
   supportsPreventExtensions = true;
 }
-var ifExtensionsPreventibleIt = supportsPreventExtensions ? it : xit;
 
-describe('reflectDefineProperty', function () {
-  it('is a function', function () {
+const ifExtensionsPreventibleIt = supportsPreventExtensions ? it : xit;
+
+describe('reflectDefineProperty', function() {
+  it('is a function', function() {
     expect(typeof reflectDefineProperty).toBe('function');
   });
 
-  it('throws if the target isn’t an object', function () {
-    expect(function () {
-      return reflectDefineProperty(void 0, 'prop', { value: true });
+  it('throws if the target isn’t an object', function() {
+    expect(function() {
+      return reflectDefineProperty(void 0, 'prop', {value: true});
     }).toThrow();
 
-    expect(function () {
-      return reflectDefineProperty(null, 'prop', { value: true });
+    expect(function() {
+      return reflectDefineProperty(null, 'prop', {value: true});
     }).toThrow();
 
-    expect(function () {
-      return reflectDefineProperty(1, 'prop', { value: true });
+    expect(function() {
+      return reflectDefineProperty(1, 'prop', {value: true});
     }).toThrow();
 
-    expect(function () {
-      return reflectDefineProperty('', 'prop', { value: true });
+    expect(function() {
+      return reflectDefineProperty('', 'prop', {value: true});
     }).toThrow();
 
-    expect(function () {
-      return reflectDefineProperty(true, 'prop', { value: true });
+    expect(function() {
+      return reflectDefineProperty(true, 'prop', {value: true});
     }).toThrow();
   });
 
-  ifExtensionsPreventibleIt('returns false for non-extensible objects', function () {
-    var o = Object.preventExtensions({});
+  ifExtensionsPreventibleIt('returns false for non-extensible objects', function() {
+    const o = Object.preventExtensions({});
 
     expect(reflectDefineProperty(o, 'prop', {})).toBe(false);
   });
 
-  itSupportsConWri('can return true, even for non-writable, non-configurable properties', function () {
-    var o = {};
-    var desc = {
+  itSupportsConWri('can return true, even for non-writable, non-configurable properties', function() {
+    const o = {};
+    const desc = {
       configurable: false,
       enumerable: true,
       value: 13,
-      writable: false
+      writable: false,
     };
 
     expect(reflectDefineProperty(o, 'prop', desc)).toBe(true, 'Initial');
@@ -128,24 +133,24 @@ describe('reflectDefineProperty', function () {
     expect(reflectDefineProperty(o, 'prop', desc)).toBe(false, 'Define different descriptor');
   });
 
-  itSupportsGetSet('can change from one property type to another, if supports get/set', function () {
-    var o = {};
+  itSupportsGetSet('can change from one property type to another, if supports get/set', function() {
+    const o = {};
 
-    var desc1 = {
+    const desc1 = {
       configurable: true,
-      set: function () {}
+      set() {},
     };
 
-    var desc2 = {
+    const desc2 = {
       configurable: true,
-      value: 13
+      value: 13,
     };
 
-    var desc3 = {
+    const desc3 = {
       configurable: true,
-      get: function () {
+      get() {
         return void 0;
-      }
+      },
     };
 
     expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
@@ -155,23 +160,23 @@ describe('reflectDefineProperty', function () {
     expect(reflectDefineProperty(o, 'prop', desc3)).toBe(true, 'desc3');
   });
 
-  itSupportsConfigurable('can change from one property type to another, if configurable', function () {
-    var o = {};
+  itSupportsConfigurable('can change from one property type to another, if configurable', function() {
+    const o = {};
 
-    var desc1 = {
+    const desc1 = {
       configurable: true,
-      set: function () {}
+      set() {},
     };
 
-    var desc2 = {
+    const desc2 = {
       configurable: false,
-      value: 13
+      value: 13,
     };
 
-    var desc3 = {
-      get: function () {
+    const desc3 = {
+      get() {
         return void 0;
-      }
+      },
     };
 
     expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
