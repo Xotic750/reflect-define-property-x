@@ -51,7 +51,7 @@
   "dependencies": {
     "array-includes-x": "^2.0.0",
     "array-some-x": "^2.5.0",
-    "assert-is-object-x": "^2.1.0",
+    "assert-is-object-x": "^3.0.0",
     "attempt-x": "^2.0.3",
     "has-own-property-x": "^3.2.0",
     "has-reflect-support-x": "^2.0.2",
