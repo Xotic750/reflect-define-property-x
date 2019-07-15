@@ -51,10 +51,10 @@
   "dependencies": {
     "array-includes-x": "^2.0.0",
     "array-some-x": "^2.5.0",
-    "assert-is-object-x": "^3.0.0",
-    "attempt-x": "^2.0.3",
+    "assert-is-object-x": "^3.0.1",
+    "attempt-x": "^2.0.4",
     "has-own-property-x": "^3.2.0",
-    "has-reflect-support-x": "^2.0.2",
+    "has-reflect-support-x": "^2.0.3",
     "object-define-property-x": "^4.1.0",
     "object-get-own-property-descriptor-x": "^3.2.0",
     "object-keys-x": "^2.5.0"
