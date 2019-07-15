@@ -56,8 +56,8 @@
     "has-own-property-x": "^4.0.0",
     "has-reflect-support-x": "^2.0.3",
     "object-define-property-x": "^5.0.0",
-    "object-get-own-property-descriptor-x": "^4.0.0",
-    "object-keys-x": "^3.0.0"
+    "object-get-own-property-descriptor-x": "^4.0.1",
+    "object-keys-x": "^3.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
