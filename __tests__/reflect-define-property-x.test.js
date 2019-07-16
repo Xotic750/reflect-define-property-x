@@ -33,7 +33,9 @@ try {
   });
 
   supportsGetSet = true;
-} catch (ignore) {}
+} catch (ignore) {
+  // empty
+}
 
 const itSupportsGetSet = supportsGetSet ? it : xit;
 
@@ -84,10 +86,12 @@ const ifExtensionsPreventibleIt = supportsPreventExtensions ? it : xit;
 describe('reflectDefineProperty', function() {
   it('is a function', function() {
     expect.assertions(1);
+    expect.assertions(1);
     expect(typeof reflectDefineProperty).toBe('function');
   });
 
   it('throws if the target isn’t an object', function() {
+    expect.assertions(1);
     expect.assertions(1);
     expect(function() {
       return reflectDefineProperty(void 0, 'prop', {value: true});
