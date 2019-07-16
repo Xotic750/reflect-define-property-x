@@ -83,29 +83,31 @@ const ifExtensionsPreventibleIt = supportsPreventExtensions ? it : xit;
 
 describe('reflectDefineProperty', function() {
   it('is a function', function() {
+    expect.assertions(1);
     expect(typeof reflectDefineProperty).toBe('function');
   });
 
   it('throws if the target isn’t an object', function() {
+    expect.assertions(1);
     expect(function() {
       return reflectDefineProperty(void 0, 'prop', {value: true});
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
       return reflectDefineProperty(null, 'prop', {value: true});
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
       return reflectDefineProperty(1, 'prop', {value: true});
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
       return reflectDefineProperty('', 'prop', {value: true});
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
 
     expect(function() {
       return reflectDefineProperty(true, 'prop', {value: true});
-    }).toThrow();
+    }).toThrowErrorMatchingSnapshot();
   });
 
   ifExtensionsPreventibleIt('returns false for non-extensible objects', function() {

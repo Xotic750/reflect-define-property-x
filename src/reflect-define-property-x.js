@@ -7,14 +7,15 @@
  * @module reflect-define-property-x
  */
 
-const attempt = require('attempt-x');
-const assertIsObject = require('assert-is-object-x');
-const $defineProperty = require('object-define-property-x');
-const objectKeys = require('attempt-x');
-const arrayIncludes = require('array-includes-x');
-const has = require('has-own-property-x');
-const getOwnPropertyDescriptor = require('object-get-own-property-descriptor-x');
-const some = require('array-some-x');
+import attempt from 'attempt-x';
+
+import assertIsObject from 'assert-is-object-x';
+import $defineProperty from 'object-define-property-x';
+import objectKeys from 'attempt-x';
+import arrayIncludes from 'array-includes-x';
+import has from 'has-own-property-x';
+import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
+import some from 'array-some-x';
 
 let testObj = $defineProperty({}, 'test', {
   configurable: true,
@@ -115,7 +116,7 @@ const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesOb
  * nativeDP(obj, 'x', {value: 7}); // true
  * obj.x; // 7
  */
-module.exports = function defineProperty(target, propertyKey, attributes) {
+export default function defineProperty(target, propertyKey, attributes) {
   assertIsObject(target);
   const result = attempt($defineProperty, target, propertyKey, attributes);
 
@@ -124,4 +125,4 @@ module.exports = function defineProperty(target, propertyKey, attributes) {
   }
 
   return areDescriptorsEqual(result.value, attributes, propertyKey);
-};
+}
