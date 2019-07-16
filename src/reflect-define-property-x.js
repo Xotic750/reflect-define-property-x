@@ -1,12 +1,3 @@
-/**
- * @file Sham for Reflect.defineProperty.
- * @version 2.1.0
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
- * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @module reflect-define-property-x
- */
-
 import attempt from 'attempt-x';
 
 import assertIsObject from 'assert-is-object-x';
@@ -110,11 +101,6 @@ const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesOb
  * @param {*} attributes - The attributes for the property being defined or modified.
  * @throws {TypeError} If target is not an Object.
  * @returns {object} A Boolean indicating whether or not the property was successfully defined.
- * @example
- * var nativeDP = require('reflect-define-property-x');
- * var obj = {};
- * nativeDP(obj, 'x', {value: 7}); // true
- * obj.x; // 7
  */
 export default function defineProperty(target, propertyKey, attributes) {
   assertIsObject(target);
