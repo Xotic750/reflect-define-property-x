@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "array-includes-x": "^3.0.3",
-    "array-some-x": "^2.5.0",
+    "array-some-x": "^3.0.0",
     "assert-is-object-x": "^3.0.3",
     "attempt-x": "^2.0.6",
     "has-own-property-x": "^4.0.3",
