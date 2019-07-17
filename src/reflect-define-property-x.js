@@ -102,7 +102,7 @@ const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesOb
  * @throws {TypeError} If target is not an Object.
  * @returns {object} A Boolean indicating whether or not the property was successfully defined.
  */
-export default function defineProperty(target, propertyKey, attributes) {
+const defineProperty = function defineProperty(target, propertyKey, attributes) {
   assertIsObject(target);
   const result = attempt($defineProperty, target, propertyKey, attributes);
 
@@ -111,4 +111,6 @@ export default function defineProperty(target, propertyKey, attributes) {
   }
 
   return areDescriptorsEqual(result.value, attributes, propertyKey);
-}
+};
+
+export default defineProperty;
