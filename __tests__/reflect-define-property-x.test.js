@@ -1,4 +1,4 @@
-let reflectDefineProperty;
+import reflectDefineProperty from '../src/reflect-define-property-x';
 
 let supportsGetSet;
 try {
@@ -67,7 +67,7 @@ describe('reflectDefineProperty', function() {
   });
 
   it('throws if the target isn’t an object', function() {
-    expect.assertions(1);
+    expect.assertions(5);
     expect(function() {
       return reflectDefineProperty(void 0, 'prop', {value: true});
     }).toThrowErrorMatchingSnapshot();
@@ -115,7 +115,7 @@ describe('reflectDefineProperty', function() {
   });
 
   itSupportsGetSet('can change from one property type to another, if supports get/set', function() {
-    const o = {};
+    const object = {};
 
     const desc1 = {
       configurable: true,
@@ -134,15 +134,15 @@ describe('reflectDefineProperty', function() {
       },
     };
 
-    expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
+    expect(reflectDefineProperty(object, 'prop', desc1, 'THIS ONE')).toBe(true, 'desc1');
 
-    expect(reflectDefineProperty(o, 'prop', desc2)).toBe(true, 'desc2');
+    expect(reflectDefineProperty(object, 'prop', desc2)).toBe(true, 'desc2');
 
-    expect(reflectDefineProperty(o, 'prop', desc3)).toBe(true, 'desc3');
+    expect(reflectDefineProperty(object, 'prop', desc3)).toBe(true, 'desc3');
   });
 
   itSupportsConfigurable('can change from one property type to another, if configurable', function() {
-    const o = {};
+    const object = {};
 
     const desc1 = {
       configurable: true,
@@ -160,10 +160,10 @@ describe('reflectDefineProperty', function() {
       },
     };
 
-    expect(reflectDefineProperty(o, 'prop', desc1)).toBe(true, 'desc1');
+    expect(reflectDefineProperty(object, 'prop', desc1)).toBe(true, 'desc1');
 
-    expect(reflectDefineProperty(o, 'prop', desc2)).toBe(true, 'desc2');
+    expect(reflectDefineProperty(object, 'prop', desc2)).toBe(true, 'desc2');
 
-    expect(reflectDefineProperty(o, 'prop', desc3)).toBe(false, 'desc3');
+    expect(reflectDefineProperty(object, 'prop', desc3)).toBe(false, 'desc3');
   });
 });

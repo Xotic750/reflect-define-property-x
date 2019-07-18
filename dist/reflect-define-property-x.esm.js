@@ -1,3 +1,7 @@
+var _this = this;
+
+function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
+
 import attempt from 'attempt-x';
 import assertIsObject from 'assert-is-object-x';
 import $defineProperty from 'object-define-property-x';
@@ -6,47 +10,43 @@ import arrayIncludes from 'array-includes-x';
 import has from 'has-own-property-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import some from 'array-some-x';
-
 /** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
 
-let testObj = $defineProperty({}, 'test', {
+var castBoolean = true.constructor;
+var testObj = $defineProperty({}, 'test', {
   configurable: true,
   enumerable: true,
   value: 'Testing',
-  writable: false,
+  writable: false
 });
+var res = attempt(function () {
+  _newArrowCheck(this, _this);
 
-let res = attempt(() => {
   testObj.test = true;
-});
-
-const supportsWritable = res.threw || testObj.test === 'Testing';
-
+}.bind(this));
+var supportsWritable = res.threw || testObj.test === 'Testing';
 testObj = $defineProperty({}, 'test', {
   configurable: true,
   enumerable: false,
   value: 'Testing',
-  writable: true,
+  writable: true
 });
-
-const supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
-
+var supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
 testObj = $defineProperty({}, 'test', {
   configurable: false,
   enumerable: true,
   value: 'Testing',
-  writable: true,
+  writable: true
 });
+res = attempt(function () {
+  _newArrowCheck(this, _this);
 
-res = attempt(() => {
   delete testObj.test;
-});
+}.bind(this));
+var supportsConfigurable = res.threw || testObj.test === 'Testing';
 
-const supportsConfigurable = res.threw || testObj.test === 'Testing';
-
-const toComparableDescriptor = function _toComparableDescriptor(desc) {
-  const descriptor = {};
+var toComparableDescriptor = function _toComparableDescriptor(desc) {
+  var descriptor = {};
 
   if (supportsEnumerable) {
     descriptor.enumerable = castBoolean(desc.enumerable);
@@ -72,22 +72,23 @@ const toComparableDescriptor = function _toComparableDescriptor(desc) {
   return descriptor;
 };
 
-const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
-  const actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
-  const requested = toComparableDescriptor(atributesObj);
-  const actualKeys = objectKeys(actual);
+var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+  var _this2 = this;
+
+  var actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
+  var requested = toComparableDescriptor(atributesObj);
+  var actualKeys = objectKeys(actual);
 
   if (actualKeys.length !== objectKeys(requested).length) {
     return false;
   }
 
-  return (
-    some(actualKeys, (key) => {
-      return actual[key] !== requested[key];
-    }) === false
-  );
-};
+  return some(actualKeys, function (key) {
+    _newArrowCheck(this, _this2);
 
+    return actual[key] !== requested[key];
+  }.bind(this)) === false;
+};
 /**
  * This method allows precise addition to or modification of a property on an object.
  * For more details see the Object.defineProperty which is similar.
@@ -101,9 +102,11 @@ const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesOb
  * @throws {TypeError} If target is not an Object.
  * @returns {object} A Boolean indicating whether or not the property was successfully defined.
  */
-const defineProperty = function defineProperty(target, propertyKey, attributes) {
+
+
+var defineProperty = function defineProperty(target, propertyKey, attributes) {
   assertIsObject(target);
-  const result = attempt($defineProperty, target, propertyKey, attributes);
+  var result = attempt($defineProperty, target, propertyKey, attributes);
 
   if (result.threw) {
     return false;
@@ -113,3 +116,5 @@ const defineProperty = function defineProperty(target, propertyKey, attributes) 
 };
 
 export default defineProperty;
+
+//# sourceMappingURL=reflect-define-property-x.esm.js.map

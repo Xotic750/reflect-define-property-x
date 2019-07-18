@@ -21,15 +21,13 @@
 <a name="module_reflect-define-property-x"></a>
 
 ## reflect-define-property-x
+
 Sham for Reflect.defineProperty
 
-**Version**: 2.1.0  
-**Author**: Xotic750 <Xotic750@gmail.com>  
-**License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
-**Copyright**: Xotic750  
 <a name="exp_module_reflect-define-property-x--module.exports"></a>
 
 ### `module.exports(target, propertyKey, attributes)` ⇒ <code>Object</code> ⏏
+
 This method allows precise addition to or modification of a property on an object.
 For more details see the Object.defineProperty which is similar.
 Object.defineProperty returns the object or throws a TypeError if the property
@@ -42,17 +40,18 @@ a Boolean indicating whether or not the property was successfully defined.
 
 - <code>TypeError</code> If target is not an Object.
 
+| Param       | Type            | Description                                                |
+| ----------- | --------------- | ---------------------------------------------------------- |
+| target      | <code>\*</code> | The target object on which to define the property.         |
+| propertyKey | <code>\*</code> | The name of the property to be defined or modified.        |
+| attributes  | <code>\*</code> | The attributes for the property being defined or modified. |
 
-| Param | Type | Description |
-| --- | --- | --- |
-| target | <code>\*</code> | The target object on which to define the property. |
-| propertyKey | <code>\*</code> | The name of the property to be defined or modified. |
-| attributes | <code>\*</code> | The attributes for the property being defined or modified. |
+**Example**
 
-**Example**  
 ```js
-var nativeDP = require('reflect-define-property-x');
-var obj = {};
-nativeDP(obj, 'x', {value: 7}); // true
-obj.x; // 7
+import reflectDefineProperty from 'reflect-define-property-x';
+
+const obj = {};
+reflectDefineProperty(obj, 'x', {value: 7}); // true
+console.log(obj.x); // 7
 ```
