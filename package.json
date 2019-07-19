@@ -1,6 +1,6 @@
 {
   "name": "reflect-define-property-x",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Sham for Reflect.defineProperty",
   "homepage": "https://github.com/Xotic750/reflect-define-property-x",
   "author": {
@@ -49,15 +49,15 @@
     "url": "https://github.com/Xotic750/reflect-define-property-x/issues"
   },
   "dependencies": {
-    "array-includes-x": "^3.0.7",
-    "array-some-x": "^3.0.3",
-    "assert-is-object-x": "^3.0.7",
-    "attempt-x": "^2.0.11",
-    "has-own-property-x": "^4.0.7",
-    "has-reflect-support-x": "^2.0.11",
-    "object-define-property-x": "^5.0.7",
-    "object-get-own-property-descriptor-x": "^4.0.8",
-    "object-keys-x": "^3.0.8"
+    "array-includes-x": "^3.0.8",
+    "array-some-x": "^3.0.4",
+    "assert-is-object-x": "^3.0.8",
+    "attempt-x": "^2.0.12",
+    "has-own-property-x": "^4.0.8",
+    "has-reflect-support-x": "^2.0.12",
+    "object-define-property-x": "^5.0.8",
+    "object-get-own-property-descriptor-x": "^4.0.9",
+    "object-keys-x": "^3.0.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
