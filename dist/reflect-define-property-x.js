@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-26T16:31:44.878Z",
+  "date": "2019-07-27T15:33:38.314Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "3602d2c63e7b101115a7",
+  "hash": "6d07d45453afccb8605a",
   "license": "MIT",
-  "version": "3.0.8"
+  "version": "3.0.9"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1567,10 +1567,10 @@ var has_own_property_x_esm_hasOwnProperty = function hasOwnProperty(object, prop
 
 
 
-/** @type {BooleanConstructor} */
-
+var ObjectCtr = {}.constructor;
 var object_define_property_x_esm_castBoolean = true.constructor;
-var nativeDefProp = typeof Object.defineProperty === 'function' && Object.defineProperty;
+var nd = ObjectCtr.defineProperty;
+var nativeDefProp = typeof nd === 'function' && nd;
 var definePropertyFallback;
 
 var toPropertyDescriptor = function _toPropertyDescriptor(desc) {
@@ -1649,9 +1649,9 @@ if (nativeDefProp) {
     return testResult.threw === false && testResult.value === object && 'sentinel' in object;
   };
 
-  var doc = typeof document !== 'undefined' && document;
+  var object_define_property_x_esm_doc = typeof document !== 'undefined' && document;
 
-  if (testWorksWith({}) && (object_define_property_x_esm_castBoolean(doc) === false || testWorksWith(doc.createElement('div')))) {
+  if (testWorksWith({}) && (object_define_property_x_esm_castBoolean(object_define_property_x_esm_doc) === false || testWorksWith(object_define_property_x_esm_doc.createElement('div')))) {
     $defineProperty = function defineProperty(object, property, descriptor) {
       return nativeDefProp(assert_is_object_x_esm(object), to_property_key_x_esm(property), toPropertyDescriptor(descriptor));
     };
@@ -1661,27 +1661,21 @@ if (nativeDefProp) {
 }
 
 if (object_define_property_x_esm_castBoolean(nativeDefProp) === false || definePropertyFallback) {
-  var prototypeOfObject = Object.prototype; // If JS engine supports accessors creating shortcuts.
+  var prototypeOfObject = ObjectCtr.prototype; // If JS engine supports accessors creating shortcuts.
 
-  var defineGetter;
-  var defineSetter;
-  var lookupGetter;
-  var lookupSetter;
   var supportsAccessors = has_own_property_x_esm(prototypeOfObject, '__defineGetter__');
+  /* eslint-disable-next-line no-underscore-dangle */
 
-  if (supportsAccessors) {
-    /* eslint-disable-next-line no-underscore-dangle,no-restricted-properties */
-    defineGetter = prototypeOfObject.__defineGetter__;
-    /* eslint-disable-next-line no-underscore-dangle,no-restricted-properties */
+  var defineGetter = supportsAccessors && prototypeOfObject.__defineGetter_;
+  /* eslint-disable-next-line no-underscore-dangle,no-restricted-properties */
 
-    defineSetter = prototypeOfObject.__defineSetter__;
-    /* eslint-disable-next-line no-underscore-dangle */
+  var defineSetter = supportsAccessors && prototypeOfObject.__defineSetter__;
+  /* eslint-disable-next-line no-underscore-dangle */
 
-    lookupGetter = prototypeOfObject.__lookupGetter__;
-    /* eslint-disable-next-line no-underscore-dangle */
+  var lookupGetter = supportsAccessors && prototypeOfObject.__lookupGetter__;
+  /* eslint-disable-next-line no-underscore-dangle */
 
-    lookupSetter = prototypeOfObject.__lookupSetter__;
-  }
+  var lookupSetter = supportsAccessors && prototypeOfObject.__lookupSetter__;
 
   $defineProperty = function defineProperty(object, property, descriptor) {
     assert_is_object_x_esm(object);
@@ -1689,7 +1683,7 @@ if (object_define_property_x_esm_castBoolean(nativeDefProp) === false || defineP
     var propDesc = toPropertyDescriptor(descriptor); // make a valiant attempt to use the real defineProperty for IE8's DOM elements.
 
     if (definePropertyFallback) {
-      var result = attempt_x_esm.call(Object, definePropertyFallback, object, propKey, propDesc);
+      var result = attempt_x_esm.call(ObjectCtr, definePropertyFallback, object, propKey, propDesc);
 
       if (result.threw === false) {
         return result.value;
@@ -1848,8 +1842,6 @@ var binaryRadix = 2;
 var octalRadix = 8;
 var testCharsCount = 2;
 var to_number_x_esm_ERROR_MESSAGE = 'Cannot convert a Symbol value to a number';
-/** @type {NumberConstructor} */
-
 var to_number_x_esm_castNumber = testCharsCount.constructor;
 var pStrSlice = to_number_x_esm_ERROR_MESSAGE.slice;
 var binaryRegex = /^0b[01]+$/i;
@@ -2336,8 +2328,8 @@ if (nativeGOPD) {
   var getOPDWorksOnDom = object_get_own_property_descriptor_x_esm_doc ? object_get_own_property_descriptor_x_esm_doesGOPDWork(object_get_own_property_descriptor_x_esm_doc.createElement('div'), 'sentinel') : true;
 
   if (getOPDWorksOnDom) {
-    var res = attempt_x_esm(nativeGOPD, object_get_own_property_descriptor_x_esm_castObject('abc'), 1);
-    var worksWithStr = res.threw === false && res.value && res.value.value === 'b';
+    var object_get_own_property_descriptor_x_esm_res = attempt_x_esm(nativeGOPD, object_get_own_property_descriptor_x_esm_castObject('abc'), 1);
+    var worksWithStr = object_get_own_property_descriptor_x_esm_res.threw === false && object_get_own_property_descriptor_x_esm_res.value && object_get_own_property_descriptor_x_esm_res.value.value === 'b';
 
     if (worksWithStr) {
       var getOPDWorksOnObject = object_get_own_property_descriptor_x_esm_doesGOPDWork({}, 'sentinel');
@@ -2565,8 +2557,8 @@ var object_keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
 
 
 
-var ObjectCtr = {}.constructor;
-var nativeKeys = typeof ObjectCtr.keys === 'function' && ObjectCtr.keys;
+var object_keys_x_esm_ObjectCtr = {}.constructor;
+var nativeKeys = typeof object_keys_x_esm_ObjectCtr.keys === 'function' && object_keys_x_esm_ObjectCtr.keys;
 var isWorking;
 var throwsWithNull;
 var object_keys_x_esm_worksWithPrim;
@@ -3333,143 +3325,113 @@ var inc = $includes;
 
 
 // CONCATENATED MODULE: ./node_modules/array-some-x/dist/array-some-x.esm.js
-var array_some_x_esm_this = undefined;
-
-function array_some_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
 
 
 
 
-/** @type {BooleanConstructor} */
-
-var array_some_x_esm_castBoolean = true.constructor;
-/** @type {ObjectConstructor} */
-
-var array_some_x_esm_castObject = {}.constructor;
 var ns = [].some;
 var nativeSome = typeof ns === 'function' && ns;
-var array_some_x_esm_isWorking;
 
-if (nativeSome) {
+var array_some_x_esm_test1 = function test1() {
   var spy = 0;
-  var array_some_x_esm_res = attempt_x_esm.call([1, 2], nativeSome, function (item) {
-    array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
-
+  var res = attempt_x_esm.call([1, 2], nativeSome, function spyAdd1(item) {
     spy += item;
     return false;
-  }.bind(undefined));
-  array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === false && spy === 3;
+  });
+  return res.threw === false && res.value === false && spy === 3;
+};
 
-  if (array_some_x_esm_isWorking) {
-    spy = '';
-    array_some_x_esm_res = attempt_x_esm.call(array_some_x_esm_castObject('abc'), nativeSome, function (item, index) {
-      array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
+var array_some_x_esm_test2 = function test2() {
+  var spy = '';
+  var res = attempt_x_esm.call({}.constructor('abc'), nativeSome, function spyAdd2(item, index) {
+    spy += item;
+    return index === 1;
+  });
+  return res.threw === false && res.value === true && spy === 'ab';
+};
 
-      spy += item;
-      return index === 1;
-    }.bind(undefined));
-    array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === true && spy === 'ab';
+var array_some_x_esm_test3 = function test3() {
+  var spy = 0;
+  var res = attempt_x_esm.call(function getArgs() {
+    /* eslint-disable-next-line prefer-rest-params */
+    return arguments;
+  }(1, 2, 3), nativeSome, function spyAdd3(item, index) {
+    spy += item;
+    return index === 2;
+  });
+  return res.threw === false && res.value === true && spy === 6;
+};
+
+var array_some_x_esm_test4 = function test4() {
+  var spy = 0;
+  var res = attempt_x_esm.call({
+    0: 1,
+    1: 2,
+    3: 3,
+    4: 4,
+    length: 4
+  }, nativeSome, function spyAdd4(item) {
+    spy += item;
+    return false;
+  });
+  return res.threw === false && res.value === false && spy === 6;
+};
+
+var array_some_x_esm_test5 = function test5() {
+  var doc = typeof document !== 'undefined' && document;
+
+  if (doc) {
+    var spy = null;
+    var fragment = doc.createDocumentFragment();
+    var div = doc.createElement('div');
+    fragment.appendChild(div);
+    var res = attempt_x_esm.call(fragment.childNodes, nativeSome, function spyAssign(item) {
+      spy = item;
+      return item;
+    });
+    return res.threw === false && res.value === true && spy === div;
   }
 
-  if (array_some_x_esm_isWorking) {
-    spy = 0;
-    array_some_x_esm_res = attempt_x_esm.call(function getArgs() {
-      /* eslint-disable-next-line prefer-rest-params */
-      return arguments;
-    }(1, 2, 3), nativeSome, function (item, index) {
-      array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
+  return true;
+};
 
-      spy += item;
-      return index === 2;
-    }.bind(undefined));
-    array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === true && spy === 6;
-  }
+var array_some_x_esm_test6 = function test6() {
+  var isStrict = function getIsStrict() {
+    /* eslint-disable-next-line babel/no-invalid-this */
+    return true.constructor(this) === false;
+  }();
 
-  if (array_some_x_esm_isWorking) {
-    spy = 0;
-    array_some_x_esm_res = attempt_x_esm.call({
-      0: 1,
-      1: 2,
-      3: 3,
-      4: 4,
-      length: 4
-    }, nativeSome, function (item) {
-      array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
-
-      spy += item;
-      return false;
-    }.bind(undefined));
-    array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === false && spy === 6;
-  }
-
-  if (array_some_x_esm_isWorking) {
-    var array_some_x_esm_doc = typeof document !== 'undefined' && document;
-
-    if (array_some_x_esm_doc) {
-      spy = null;
-      var fragment = array_some_x_esm_doc.createDocumentFragment();
-      var div = array_some_x_esm_doc.createElement('div');
-      fragment.appendChild(div);
-      array_some_x_esm_res = attempt_x_esm.call(fragment.childNodes, nativeSome, function (item) {
-        array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
-
-        spy = item;
-        return item;
-      }.bind(undefined));
-      array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === true && spy === div;
-    }
-  }
-
-  if (array_some_x_esm_isWorking) {
-    var isStrict = function getIsStrict() {
+  if (isStrict) {
+    var spy = null;
+    var res = attempt_x_esm.call([1], nativeSome, function thisTest() {
       /* eslint-disable-next-line babel/no-invalid-this */
-      return array_some_x_esm_castBoolean(this) === false;
-    }();
-
-    if (isStrict) {
-      spy = null;
-      array_some_x_esm_res = attempt_x_esm.call([1], nativeSome, function () {
-        array_some_x_esm_newArrowCheck(this, array_some_x_esm_this);
-
-        /* eslint-disable-next-line babel/no-invalid-this */
-        spy = typeof this === 'string';
-      }.bind(undefined), 'x');
-      array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === false && spy === true;
-    }
+      spy = typeof this === 'string';
+    }, 'x');
+    return res.threw === false && res.value === false && spy === true;
   }
 
-  if (array_some_x_esm_isWorking) {
-    spy = {};
-    var fn = ['return nativeSome.call("foo", function (_, __, context) {', 'if (Boolean(context) === false || typeof context !== "object") {', 'spy.value = true;}});'].join('');
-    /* eslint-disable-next-line no-new-func */
+  return true;
+};
 
-    array_some_x_esm_res = attempt_x_esm(Function('nativeSome', 'spy', fn), nativeSome, spy);
-    array_some_x_esm_isWorking = array_some_x_esm_res.threw === false && array_some_x_esm_res.value === false && spy.value !== true;
-  }
-}
-/**
- * This method tests whether some element in the array passes the test
- * implemented by the provided function.
- *
- * @param {Array} array - The array to iterate over.
- * @param {Function} callBack - Function to test for each element.
- * @param {*} [thisArg] - Value to use as this when executing callback.
- * @throws {TypeError} If array is null or undefined.
- * @throws {TypeError} If callBack is not a function.
- * @returns {boolean} `true` if the callback function returns a truthy value for
- *  any array element; otherwise, `false`.
- */
+var array_some_x_esm_test7 = function test7() {
+  var spy = {};
+  var fn = 'return nativeSome.call("foo", function (_, __, context) {' + 'if (castBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
+  /* eslint-disable-next-line no-new-func */
 
+  var res = attempt_x_esm(Function('nativeSome', 'spy', 'castBoolean', fn), nativeSome, spy, true.constructor);
+  return res.threw === false && res.value === false && spy.value !== true;
+};
 
-var $some;
+var array_some_x_esm_isWorking = true.constructor(nativeSome) && array_some_x_esm_test1() && array_some_x_esm_test2() && array_some_x_esm_test3() && array_some_x_esm_test4() && array_some_x_esm_test5() && array_some_x_esm_test6() && array_some_x_esm_test7();
 
-if (nativeSome) {
-  $some = function some(array, callBack
+var array_some_x_esm_patchedSome = function patchedSome() {
+  return function some(array, callBack
   /* , thisArg */
   ) {
-    var args = [callBack];
+    require_object_coercible_x_esm(array);
+    var args = [assert_is_function_x_esm(callBack)];
 
     if (arguments.length > 2) {
       /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
@@ -3478,11 +3440,13 @@ if (nativeSome) {
 
     return nativeSome.apply(array, args);
   };
-} else {
-  // ES5 15.4.4.17
-  // http://es5.github.com/#x15.4.4.17
-  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
-  $some = function some(array, callBack
+}; // ES5 15.4.4.17
+// http://es5.github.com/#x15.4.4.17
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
+
+
+var array_some_x_esm_implementation = function implementation() {
+  return function some(array, callBack
   /* , thisArg */
   ) {
     var object = to_object_x_esm(array); // If no callback function or if callback is not a callable function
@@ -3490,13 +3454,9 @@ if (nativeSome) {
     assert_is_function_x_esm(callBack);
     var iterable = split_if_boxed_bug_x_esm(object);
     var length = to_length_x_esm(iterable.length);
-    var thisArg;
+    /* eslint-disable-next-line prefer-rest-params,no-void */
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      thisArg = arguments[2];
-    }
-
+    var thisArg = arguments.length > 2 ? arguments[2] : void 0;
     var noThis = typeof thisArg === 'undefined';
 
     for (var i = 0; i < length; i += 1) {
@@ -3511,10 +3471,23 @@ if (nativeSome) {
 
     return false;
   };
-}
+};
+/**
+ * This method tests whether some element in the array passes the test
+ * implemented by the provided function.
+ *
+ * @param {Array} array - The array to iterate over.
+ * @param {Function} callBack - Function to test for each element.
+ * @param {*} [thisArg] - Value to use as this when executing callback.
+ * @throws {TypeError} If array is null or undefined.
+ * @throws {TypeError} If callBack is not a function.
+ * @returns {boolean} `true` if the callback function returns a truthy value for
+ *  any array element; otherwise, `false`.
+ */
 
-var s = $some;
-/* harmony default export */ var array_some_x_esm = (s);
+
+var $some = array_some_x_esm_isWorking ? array_some_x_esm_patchedSome() : array_some_x_esm_implementation();
+/* harmony default export */ var array_some_x_esm = ($some);
 
 
 // CONCATENATED MODULE: ./dist/reflect-define-property-x.esm.js
