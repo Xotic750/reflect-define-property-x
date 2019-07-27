@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T15:33:38.314Z",
+  "date": "2019-07-27T20:31:31.800Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "6d07d45453afccb8605a",
+  "hash": "5465afdb9f85689dadab",
   "license": "MIT",
   "version": "3.0.9"
 }
@@ -3491,9 +3491,6 @@ var $some = array_some_x_esm_isWorking ? array_some_x_esm_patchedSome() : array_
 
 
 // CONCATENATED MODULE: ./dist/reflect-define-property-x.esm.js
-var reflect_define_property_x_esm_this = undefined;
-
-function reflect_define_property_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
 
@@ -3503,20 +3500,15 @@ function reflect_define_property_x_esm_newArrowCheck(innerThis, boundThis) { if 
 
 
 
-/** @type {BooleanConstructor} */
-
-var reflect_define_property_x_esm_castBoolean = true.constructor;
 var reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test', {
   configurable: true,
   enumerable: true,
   value: 'Testing',
   writable: false
 });
-var reflect_define_property_x_esm_res = attempt_x_esm(function () {
-  reflect_define_property_x_esm_newArrowCheck(this, reflect_define_property_x_esm_this);
-
+var reflect_define_property_x_esm_res = attempt_x_esm(function attemptee() {
   reflect_define_property_x_esm_testObj.test = true;
-}.bind(undefined));
+});
 var supportsWritable = reflect_define_property_x_esm_res.threw || reflect_define_property_x_esm_testObj.test === 'Testing';
 reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test', {
   configurable: true,
@@ -3531,22 +3523,20 @@ reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test',
   value: 'Testing',
   writable: true
 });
-reflect_define_property_x_esm_res = attempt_x_esm(function () {
-  reflect_define_property_x_esm_newArrowCheck(this, reflect_define_property_x_esm_this);
-
+reflect_define_property_x_esm_res = attempt_x_esm(function attemptee() {
   delete reflect_define_property_x_esm_testObj.test;
-}.bind(undefined));
+});
 var supportsConfigurable = reflect_define_property_x_esm_res.threw || reflect_define_property_x_esm_testObj.test === 'Testing';
 
-var toComparableDescriptor = function _toComparableDescriptor(desc) {
+var reflect_define_property_x_esm_toComparableDescriptor = function toComparableDescriptor(desc) {
   var descriptor = {};
 
   if (supportsEnumerable) {
-    descriptor.enumerable = reflect_define_property_x_esm_castBoolean(desc.enumerable);
+    descriptor.enumerable = to_boolean_x_esm(desc.enumerable);
   }
 
   if (supportsConfigurable) {
-    descriptor.configurable = reflect_define_property_x_esm_castBoolean(desc.configurable);
+    descriptor.configurable = to_boolean_x_esm(desc.configurable);
   }
 
   if (has_own_property_x_esm(desc, 'value')) {
@@ -3554,7 +3544,7 @@ var toComparableDescriptor = function _toComparableDescriptor(desc) {
   }
 
   if (supportsWritable) {
-    descriptor.writable = reflect_define_property_x_esm_castBoolean(desc.writable);
+    descriptor.writable = to_boolean_x_esm(desc.writable);
   }
 
   if (has_own_property_x_esm(desc, 'get') || has_own_property_x_esm(desc, 'set')) {
@@ -3565,22 +3555,18 @@ var toComparableDescriptor = function _toComparableDescriptor(desc) {
   return descriptor;
 };
 
-var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
-  var _this2 = this;
-
-  var actual = toComparableDescriptor(object_get_own_property_descriptor_x_esm(actualObj, propertyKey));
-  var requested = toComparableDescriptor(atributesObj);
+var reflect_define_property_x_esm_areDescriptorsEqual = function areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+  var actual = reflect_define_property_x_esm_toComparableDescriptor(object_get_own_property_descriptor_x_esm(actualObj, propertyKey));
+  var requested = reflect_define_property_x_esm_toComparableDescriptor(atributesObj);
   var actualKeys = object_keys_x_esm(actual);
 
   if (actualKeys.length !== object_keys_x_esm(requested).length) {
     return false;
   }
 
-  return array_some_x_esm(actualKeys, function (key) {
-    reflect_define_property_x_esm_newArrowCheck(this, _this2);
-
+  return array_some_x_esm(actualKeys, function iteratee(key) {
     return actual[key] !== requested[key];
-  }.bind(this)) === false;
+  }) === false;
 };
 /**
  * This method allows precise addition to or modification of a property on an object.
@@ -3605,7 +3591,7 @@ var reflect_define_property_x_esm_defineProperty = function defineProperty(targe
     return false;
   }
 
-  return areDescriptorsEqual(result.value, attributes, propertyKey);
+  return reflect_define_property_x_esm_areDescriptorsEqual(result.value, attributes, propertyKey);
 };
 
 /* harmony default export */ var reflect_define_property_x_esm = __webpack_exports__["default"] = (reflect_define_property_x_esm_defineProperty);

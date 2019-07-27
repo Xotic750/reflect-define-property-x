@@ -6,9 +6,7 @@ import arrayIncludes from 'array-includes-x';
 import has from 'has-own-property-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import some from 'array-some-x';
-
-/** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
+import toBoolean from 'to-boolean-x';
 
 let testObj = $defineProperty({}, 'test', {
   configurable: true,
@@ -17,7 +15,7 @@ let testObj = $defineProperty({}, 'test', {
   writable: false,
 });
 
-let res = attempt(() => {
+let res = attempt(function attemptee() {
   testObj.test = true;
 });
 
@@ -39,21 +37,21 @@ testObj = $defineProperty({}, 'test', {
   writable: true,
 });
 
-res = attempt(() => {
+res = attempt(function attemptee() {
   delete testObj.test;
 });
 
 const supportsConfigurable = res.threw || testObj.test === 'Testing';
 
-const toComparableDescriptor = function _toComparableDescriptor(desc) {
+const toComparableDescriptor = function toComparableDescriptor(desc) {
   const descriptor = {};
 
   if (supportsEnumerable) {
-    descriptor.enumerable = castBoolean(desc.enumerable);
+    descriptor.enumerable = toBoolean(desc.enumerable);
   }
 
   if (supportsConfigurable) {
-    descriptor.configurable = castBoolean(desc.configurable);
+    descriptor.configurable = toBoolean(desc.configurable);
   }
 
   if (has(desc, 'value')) {
@@ -61,7 +59,7 @@ const toComparableDescriptor = function _toComparableDescriptor(desc) {
   }
 
   if (supportsWritable) {
-    descriptor.writable = castBoolean(desc.writable);
+    descriptor.writable = toBoolean(desc.writable);
   }
 
   if (has(desc, 'get') || has(desc, 'set')) {
@@ -72,7 +70,7 @@ const toComparableDescriptor = function _toComparableDescriptor(desc) {
   return descriptor;
 };
 
-const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+const areDescriptorsEqual = function areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
   const actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
   const requested = toComparableDescriptor(atributesObj);
   const actualKeys = objectKeys(actual);
@@ -82,7 +80,7 @@ const areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesOb
   }
 
   return (
-    some(actualKeys, (key) => {
+    some(actualKeys, function iteratee(key) {
       return actual[key] !== requested[key];
     }) === false
   );

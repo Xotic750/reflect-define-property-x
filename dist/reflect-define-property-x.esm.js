@@ -1,7 +1,3 @@
-var _this = this;
-
-function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
 import attempt from 'attempt-x';
 import assertIsObject from 'assert-is-object-x';
 import $defineProperty from 'object-define-property-x';
@@ -10,20 +6,16 @@ import arrayIncludes from 'array-includes-x';
 import has from 'has-own-property-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import some from 'array-some-x';
-/** @type {BooleanConstructor} */
-
-var castBoolean = true.constructor;
+import toBoolean from 'to-boolean-x';
 var testObj = $defineProperty({}, 'test', {
   configurable: true,
   enumerable: true,
   value: 'Testing',
   writable: false
 });
-var res = attempt(function () {
-  _newArrowCheck(this, _this);
-
+var res = attempt(function attemptee() {
   testObj.test = true;
-}.bind(this));
+});
 var supportsWritable = res.threw || testObj.test === 'Testing';
 testObj = $defineProperty({}, 'test', {
   configurable: true,
@@ -38,22 +30,20 @@ testObj = $defineProperty({}, 'test', {
   value: 'Testing',
   writable: true
 });
-res = attempt(function () {
-  _newArrowCheck(this, _this);
-
+res = attempt(function attemptee() {
   delete testObj.test;
-}.bind(this));
+});
 var supportsConfigurable = res.threw || testObj.test === 'Testing';
 
-var toComparableDescriptor = function _toComparableDescriptor(desc) {
+var toComparableDescriptor = function toComparableDescriptor(desc) {
   var descriptor = {};
 
   if (supportsEnumerable) {
-    descriptor.enumerable = castBoolean(desc.enumerable);
+    descriptor.enumerable = toBoolean(desc.enumerable);
   }
 
   if (supportsConfigurable) {
-    descriptor.configurable = castBoolean(desc.configurable);
+    descriptor.configurable = toBoolean(desc.configurable);
   }
 
   if (has(desc, 'value')) {
@@ -61,7 +51,7 @@ var toComparableDescriptor = function _toComparableDescriptor(desc) {
   }
 
   if (supportsWritable) {
-    descriptor.writable = castBoolean(desc.writable);
+    descriptor.writable = toBoolean(desc.writable);
   }
 
   if (has(desc, 'get') || has(desc, 'set')) {
@@ -72,9 +62,7 @@ var toComparableDescriptor = function _toComparableDescriptor(desc) {
   return descriptor;
 };
 
-var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
-  var _this2 = this;
-
+var areDescriptorsEqual = function areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
   var actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
   var requested = toComparableDescriptor(atributesObj);
   var actualKeys = objectKeys(actual);
@@ -83,11 +71,9 @@ var areDescriptorsEqual = function _areDescriptorsEqual(actualObj, atributesObj,
     return false;
   }
 
-  return some(actualKeys, function (key) {
-    _newArrowCheck(this, _this2);
-
+  return some(actualKeys, function iteratee(key) {
     return actual[key] !== requested[key];
-  }.bind(this)) === false;
+  }) === false;
 };
 /**
  * This method allows precise addition to or modification of a property on an object.
