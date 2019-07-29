@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T22:22:27.508Z",
+  "date": "2019-07-29T07:53:01.844Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "5465afdb9f85689dadab",
+  "hash": "7a516a213efd395ea833",
   "license": "MIT",
   "version": "3.0.9"
 }
@@ -2577,17 +2577,17 @@ if (nativeKeys) {
     return x === a && y === b || x === b && y === a;
   };
 
-  var testObj = {
+  var object_keys_x_esm_testObj = {
     a: 1,
     b: 2
   };
-  var object_keys_x_esm_res = attempt_x_esm(nativeKeys, testObj);
+  var object_keys_x_esm_res = attempt_x_esm(nativeKeys, object_keys_x_esm_testObj);
   isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, 'a', 'b');
 
   if (isWorking) {
-    testObj = Object('a');
-    testObj.y = 1;
-    object_keys_x_esm_res = attempt_x_esm(nativeKeys, testObj);
+    object_keys_x_esm_testObj = Object('a');
+    object_keys_x_esm_testObj.y = 1;
+    object_keys_x_esm_res = attempt_x_esm(nativeKeys, object_keys_x_esm_testObj);
     isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, '0', 'y');
   }
 
@@ -3500,33 +3500,48 @@ var $some = array_some_x_esm_isWorking ? array_some_x_esm_patchedSome() : array_
 
 
 
-var reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test', {
-  configurable: true,
-  enumerable: true,
-  value: 'Testing',
-  writable: false
-});
-var reflect_define_property_x_esm_res = attempt_x_esm(function attemptee() {
-  reflect_define_property_x_esm_testObj.test = true;
-});
-var supportsWritable = reflect_define_property_x_esm_res.threw || reflect_define_property_x_esm_testObj.test === 'Testing';
-reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test', {
-  configurable: true,
-  enumerable: false,
-  value: 'Testing',
-  writable: true
-});
-var supportsEnumerable = array_includes_x_esm(object_keys_x_esm(reflect_define_property_x_esm_testObj), 'test') === false;
-reflect_define_property_x_esm_testObj = object_define_property_x_esm({}, 'test', {
-  configurable: false,
-  enumerable: true,
-  value: 'Testing',
-  writable: true
-});
-reflect_define_property_x_esm_res = attempt_x_esm(function attemptee() {
-  delete reflect_define_property_x_esm_testObj.test;
-});
-var supportsConfigurable = reflect_define_property_x_esm_res.threw || reflect_define_property_x_esm_testObj.test === 'Testing';
+
+var reflect_define_property_x_esm_testSupportsWritable = function testSupportsWritable() {
+  var testObj = object_define_property_x_esm({}, 'test', {
+    configurable: true,
+    enumerable: true,
+    value: 'Testing',
+    writable: false
+  });
+  var res = attempt_x_esm(function attemptee() {
+    testObj.test = true;
+  });
+  return res.threw || testObj.test === 'Testing';
+};
+
+var supportsWritable = reflect_define_property_x_esm_testSupportsWritable();
+
+var reflect_define_property_x_esm_testSupportsEnumerable = function testSupportsEnumerable() {
+  var testObj = object_define_property_x_esm({}, 'test', {
+    configurable: true,
+    enumerable: false,
+    value: 'Testing',
+    writable: true
+  });
+  return array_includes_x_esm(object_keys_x_esm(testObj), 'test') === false;
+};
+
+var supportsEnumerable = reflect_define_property_x_esm_testSupportsEnumerable();
+
+var reflect_define_property_x_esm_testSupportsConfigurable = function testSupportsConfigurable() {
+  var testObj = object_define_property_x_esm({}, 'test', {
+    configurable: false,
+    enumerable: true,
+    value: 'Testing',
+    writable: true
+  });
+  var res = attempt_x_esm(function attemptee() {
+    delete testObj.test;
+  });
+  return res.threw || testObj.test === 'Testing';
+};
+
+var supportsConfigurable = reflect_define_property_x_esm_testSupportsConfigurable();
 
 var reflect_define_property_x_esm_toComparableDescriptor = function toComparableDescriptor(desc) {
   var descriptor = {};

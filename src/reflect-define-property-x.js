@@ -8,40 +8,52 @@ import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import some from 'array-some-x';
 import toBoolean from 'to-boolean-x';
 
-let testObj = $defineProperty({}, 'test', {
-  configurable: true,
-  enumerable: true,
-  value: 'Testing',
-  writable: false,
-});
+const testSupportsWritable = function testSupportsWritable() {
+  const testObj = $defineProperty({}, 'test', {
+    configurable: true,
+    enumerable: true,
+    value: 'Testing',
+    writable: false,
+  });
 
-let res = attempt(function attemptee() {
-  testObj.test = true;
-});
+  const res = attempt(function attemptee() {
+    testObj.test = true;
+  });
 
-const supportsWritable = res.threw || testObj.test === 'Testing';
+  return res.threw || testObj.test === 'Testing';
+};
 
-testObj = $defineProperty({}, 'test', {
-  configurable: true,
-  enumerable: false,
-  value: 'Testing',
-  writable: true,
-});
+const supportsWritable = testSupportsWritable();
 
-const supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
+const testSupportsEnumerable = function testSupportsEnumerable() {
+  const testObj = $defineProperty({}, 'test', {
+    configurable: true,
+    enumerable: false,
+    value: 'Testing',
+    writable: true,
+  });
 
-testObj = $defineProperty({}, 'test', {
-  configurable: false,
-  enumerable: true,
-  value: 'Testing',
-  writable: true,
-});
+  return arrayIncludes(objectKeys(testObj), 'test') === false;
+};
 
-res = attempt(function attemptee() {
-  delete testObj.test;
-});
+const supportsEnumerable = testSupportsEnumerable();
 
-const supportsConfigurable = res.threw || testObj.test === 'Testing';
+const testSupportsConfigurable = function testSupportsConfigurable() {
+  const testObj = $defineProperty({}, 'test', {
+    configurable: false,
+    enumerable: true,
+    value: 'Testing',
+    writable: true,
+  });
+
+  const res = attempt(function attemptee() {
+    delete testObj.test;
+  });
+
+  return res.threw || testObj.test === 'Testing';
+};
+
+const supportsConfigurable = testSupportsConfigurable();
 
 const toComparableDescriptor = function toComparableDescriptor(desc) {
   const descriptor = {};

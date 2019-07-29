@@ -7,33 +7,48 @@ import has from 'has-own-property-x';
 import getOwnPropertyDescriptor from 'object-get-own-property-descriptor-x';
 import some from 'array-some-x';
 import toBoolean from 'to-boolean-x';
-var testObj = $defineProperty({}, 'test', {
-  configurable: true,
-  enumerable: true,
-  value: 'Testing',
-  writable: false
-});
-var res = attempt(function attemptee() {
-  testObj.test = true;
-});
-var supportsWritable = res.threw || testObj.test === 'Testing';
-testObj = $defineProperty({}, 'test', {
-  configurable: true,
-  enumerable: false,
-  value: 'Testing',
-  writable: true
-});
-var supportsEnumerable = arrayIncludes(objectKeys(testObj), 'test') === false;
-testObj = $defineProperty({}, 'test', {
-  configurable: false,
-  enumerable: true,
-  value: 'Testing',
-  writable: true
-});
-res = attempt(function attemptee() {
-  delete testObj.test;
-});
-var supportsConfigurable = res.threw || testObj.test === 'Testing';
+
+var testSupportsWritable = function testSupportsWritable() {
+  var testObj = $defineProperty({}, 'test', {
+    configurable: true,
+    enumerable: true,
+    value: 'Testing',
+    writable: false
+  });
+  var res = attempt(function attemptee() {
+    testObj.test = true;
+  });
+  return res.threw || testObj.test === 'Testing';
+};
+
+var supportsWritable = testSupportsWritable();
+
+var testSupportsEnumerable = function testSupportsEnumerable() {
+  var testObj = $defineProperty({}, 'test', {
+    configurable: true,
+    enumerable: false,
+    value: 'Testing',
+    writable: true
+  });
+  return arrayIncludes(objectKeys(testObj), 'test') === false;
+};
+
+var supportsEnumerable = testSupportsEnumerable();
+
+var testSupportsConfigurable = function testSupportsConfigurable() {
+  var testObj = $defineProperty({}, 'test', {
+    configurable: false,
+    enumerable: true,
+    value: 'Testing',
+    writable: true
+  });
+  var res = attempt(function attemptee() {
+    delete testObj.test;
+  });
+  return res.threw || testObj.test === 'Testing';
+};
+
+var supportsConfigurable = testSupportsConfigurable();
 
 var toComparableDescriptor = function toComparableDescriptor(desc) {
   var descriptor = {};
