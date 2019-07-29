@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-29T07:53:01.844Z",
+  "date": "2019-07-29T08:01:40.247Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "7a516a213efd395ea833",
+  "hash": "3f8b43e5e60de435fc5d",
   "license": "MIT",
   "version": "3.0.9"
 }
@@ -3570,7 +3570,10 @@ var reflect_define_property_x_esm_toComparableDescriptor = function toComparable
   return descriptor;
 };
 
-var reflect_define_property_x_esm_areDescriptorsEqual = function areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+var reflect_define_property_x_esm_areDescriptorsEqual = function areDescriptorsEqual(obj) {
+  var actualObj = obj.actualObj,
+      atributesObj = obj.atributesObj,
+      propertyKey = obj.propertyKey;
   var actual = reflect_define_property_x_esm_toComparableDescriptor(object_get_own_property_descriptor_x_esm(actualObj, propertyKey));
   var requested = reflect_define_property_x_esm_toComparableDescriptor(atributesObj);
   var actualKeys = object_keys_x_esm(actual);
@@ -3606,7 +3609,11 @@ var reflect_define_property_x_esm_defineProperty = function defineProperty(targe
     return false;
   }
 
-  return reflect_define_property_x_esm_areDescriptorsEqual(result.value, attributes, propertyKey);
+  return reflect_define_property_x_esm_areDescriptorsEqual({
+    actualObj: result.value,
+    atributesObj: attributes,
+    propertyKey: propertyKey
+  });
 };
 
 /* harmony default export */ var reflect_define_property_x_esm = __webpack_exports__["default"] = (reflect_define_property_x_esm_defineProperty);

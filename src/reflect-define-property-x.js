@@ -82,7 +82,8 @@ const toComparableDescriptor = function toComparableDescriptor(desc) {
   return descriptor;
 };
 
-const areDescriptorsEqual = function areDescriptorsEqual(actualObj, atributesObj, propertyKey) {
+const areDescriptorsEqual = function areDescriptorsEqual(obj) {
+  const {actualObj, atributesObj, propertyKey} = obj;
   const actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
   const requested = toComparableDescriptor(atributesObj);
   const actualKeys = objectKeys(actual);
@@ -119,7 +120,7 @@ const defineProperty = function defineProperty(target, propertyKey, attributes) 
     return false;
   }
 
-  return areDescriptorsEqual(result.value, attributes, propertyKey);
+  return areDescriptorsEqual({actualObj: result.value, atributesObj: attributes, propertyKey});
 };
 
 export default defineProperty;
