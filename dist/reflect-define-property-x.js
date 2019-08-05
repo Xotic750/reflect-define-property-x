@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-05T20:49:37.990Z",
+  "date": "2019-08-05T21:56:18.818Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "82323ac1898979bb1b95",
+  "hash": "6f3638c893df5fc20414",
   "license": "MIT",
-  "version": "3.0.12"
+  "version": "3.0.13"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1746,41 +1746,28 @@ var defProp = $defineProperty;
 
 
 // CONCATENATED MODULE: ./node_modules/is-array-x/dist/is-array-x.esm.js
-var is_array_x_esm_this = undefined;
-
-function is_array_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
-
-var nativeIsArray = [].isArray;
-var isArrayNative = typeof nativeIsArray === 'function' && nativeIsArray;
-var testRes = isArrayNative && attempt_x_esm(function () {
-  is_array_x_esm_newArrowCheck(this, is_array_x_esm_this);
-
-  return isArrayNative([]) === true && isArrayNative({
+var nia = [].isArray;
+var nativeIsArray = typeof nia === 'function' && nia;
+var is_array_x_esm_testResult = attempt_x_esm(function attemptee() {
+  return nativeIsArray([]) === true && nativeIsArray({
     length: 0
   }) === false;
-}.bind(undefined));
+});
+var isWorking = is_array_x_esm_testResult.threw === false && is_array_x_esm_testResult.value === true;
+var implementation = function isArray(value) {
+  return to_string_tag_x_esm(value) === '[object Array]';
+};
+/**
+ * Determines whether the passed value is an Array.
+ *
+ * @param {*} value - The value to test.
+ * @returns {boolean} - True if an array; otherwise false.
+ */
 
-var isArrayFn = function iife() {
-  if (testRes && testRes.threw === false && testRes.value === true) {
-    return isArrayNative;
-  }
-  /**
-   * The isArray() function determines whether the passed value is an Array.
-   *
-   * @function isArray
-   * @param {*} [value] - The object to be checked..
-   * @returns {boolean} `true` if the object is an Array; otherwise, `false`.
-   */
-
-
-  return function isArray(value) {
-    return to_string_tag_x_esm(value) === '[object Array]';
-  };
-}();
-
-/* harmony default export */ var is_array_x_esm = (isArrayFn);
+var is_array_x_esm_isArray = isWorking ? nativeIsArray : implementation;
+/* harmony default export */ var is_array_x_esm = (is_array_x_esm_isArray);
 
 
 // EXTERNAL MODULE: ./node_modules/is-arguments/index.js
@@ -2600,7 +2587,7 @@ var object_keys_default = /*#__PURE__*/__webpack_require__.n(object_keys);
 
 var object_keys_x_esm_ObjectCtr = {}.constructor;
 var nativeKeys = typeof object_keys_x_esm_ObjectCtr.keys === 'function' && object_keys_x_esm_ObjectCtr.keys;
-var isWorking;
+var object_keys_x_esm_isWorking;
 var throwsWithNull;
 var object_keys_x_esm_worksWithPrim;
 var worksWithRegex;
@@ -2623,16 +2610,16 @@ if (nativeKeys) {
     b: 2
   };
   var object_keys_x_esm_res = attempt_x_esm(nativeKeys, object_keys_x_esm_testObj);
-  isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, 'a', 'b');
+  object_keys_x_esm_isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, 'a', 'b');
 
-  if (isWorking) {
+  if (object_keys_x_esm_isWorking) {
     object_keys_x_esm_testObj = Object('a');
     object_keys_x_esm_testObj.y = 1;
     object_keys_x_esm_res = attempt_x_esm(nativeKeys, object_keys_x_esm_testObj);
-    isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, '0', 'y');
+    object_keys_x_esm_isWorking = isCorrectRes(object_keys_x_esm_res, 2) && either(object_keys_x_esm_res, '0', 'y');
   }
 
-  if (isWorking) {
+  if (object_keys_x_esm_isWorking) {
     throwsWithNull = attempt_x_esm(nativeKeys, null).threw;
     object_keys_x_esm_worksWithPrim = isCorrectRes(attempt_x_esm(nativeKeys, 42), 0);
     worksWithRegex = attempt_x_esm(nativeKeys, /a/g).threw === false;
@@ -2657,7 +2644,7 @@ if (nativeKeys) {
 
 var objectKeys;
 
-if (isWorking) {
+if (object_keys_x_esm_isWorking) {
   if (throwsWithNull && object_keys_x_esm_worksWithPrim && worksWithRegex && worksWithArgs && object_keys_x_esm_worksWithStr) {
     objectKeys = nativeKeys;
   } else {
@@ -3347,7 +3334,7 @@ var array_includes_x_esm_runFindIndex = function runFindIndex(obj) {
   }) > -1;
 };
 
-var implementation = function includes(array, searchElement) {
+var array_includes_x_esm_implementation = function includes(array, searchElement) {
   var object = to_object_x_esm(array);
   var iterable = split_if_boxed_bug_x_esm(object);
   var length = to_length_x_esm(iterable.length);
@@ -3383,7 +3370,7 @@ var implementation = function includes(array, searchElement) {
  * @returns {boolean} `true` if searched element is included; otherwise `false`.
  */
 
-var $includes = array_includes_x_esm_isWorking ? patchedReduce : implementation;
+var $includes = array_includes_x_esm_isWorking ? patchedReduce : array_includes_x_esm_implementation;
 /* harmony default export */ var array_includes_x_esm = ($includes);
 
 
