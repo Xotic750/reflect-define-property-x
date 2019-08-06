@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-05T21:56:18.818Z",
+  "date": "2019-08-06T11:25:30.938Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
