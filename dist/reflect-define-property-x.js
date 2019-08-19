@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-15T21:02:12.987Z",
+  "date": "2019-08-19T15:57:45.422Z",
   "describe": "",
   "description": "Sham for Reflect.defineProperty",
   "file": "reflect-define-property-x.js",
-  "hash": "7b89e15363b3bba4c757",
+  "hash": "12e9c50efbd812bf53d7",
   "license": "MIT",
   "version": "3.1.0"
 }
@@ -3735,10 +3735,10 @@ var reflect_define_property_x_esm_toComparableDescriptor = function toComparable
 
 var reflect_define_property_x_esm_areDescriptorsEqual = function areDescriptorsEqual(obj) {
   var actualObj = obj.actualObj,
-      atributesObj = obj.atributesObj,
+      attributesObj = obj.attributesObj,
       propertyKey = obj.propertyKey;
   var actual = reflect_define_property_x_esm_toComparableDescriptor(object_get_own_property_descriptor_x_esm(actualObj, propertyKey));
-  var requested = reflect_define_property_x_esm_toComparableDescriptor(atributesObj);
+  var requested = reflect_define_property_x_esm_toComparableDescriptor(attributesObj);
   var actualKeys = object_keys_x_esm(actual);
 
   if (actualKeys.length !== object_keys_x_esm(requested).length) {
@@ -3774,7 +3774,7 @@ var reflect_define_property_x_esm_defineProperty = function defineProperty(targe
 
   return reflect_define_property_x_esm_areDescriptorsEqual({
     actualObj: result.value,
-    atributesObj: attributes,
+    attributesObj: attributes,
     propertyKey: propertyKey
   });
 };

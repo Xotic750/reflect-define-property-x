@@ -79,10 +79,10 @@ var toComparableDescriptor = function toComparableDescriptor(desc) {
 
 var areDescriptorsEqual = function areDescriptorsEqual(obj) {
   var actualObj = obj.actualObj,
-      atributesObj = obj.atributesObj,
+      attributesObj = obj.attributesObj,
       propertyKey = obj.propertyKey;
   var actual = toComparableDescriptor(getOwnPropertyDescriptor(actualObj, propertyKey));
-  var requested = toComparableDescriptor(atributesObj);
+  var requested = toComparableDescriptor(attributesObj);
   var actualKeys = objectKeys(actual);
 
   if (actualKeys.length !== objectKeys(requested).length) {
@@ -118,7 +118,7 @@ var defineProperty = function defineProperty(target, propertyKey, attributes) {
 
   return areDescriptorsEqual({
     actualObj: result.value,
-    atributesObj: attributes,
+    attributesObj: attributes,
     propertyKey: propertyKey
   });
 };
